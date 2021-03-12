@@ -1,23 +1,11 @@
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
-
-const nextStep = document.querySelector('#solve-step');
-const killSolve = document.querySelector('#keel-solve');
-
-const width = 400;
-const height = 400;
-
-canvas.width = width;
-canvas.height = height;
-
 class Game {
-    constructor(ctx) {
+    constructor(width, height, ctx) {
         this.w = 40;
         this.step = 0;
         this.ctx = ctx;
         this.grid = [];
         this.stack = [];
-        this.rows = height / this.w;
+        this.rows = height / this.w;    
         this.cols = width / this.w;
     }
 
@@ -40,9 +28,9 @@ class Game {
         this.grid = this.resetMaze;
     }
 
-    solve = () => {
+    solveStep = () => {
         this.ctx.fillStyle = '#111';
-        this.ctx.fillRect(0, 0, width, height);
+        this.ctx.fillRect(0, 0, this.width, this.height);
         for(const cell of this.grid) {
             cell.show(this.w);
             this.current.show(this.w, true);
@@ -51,10 +39,10 @@ class Game {
         this.current.solution = true;
         // if bfs shift if dfs pop
         const next = this.stack.pop();
+
         this.step = next?.step;
         if(this.current.goal) {
-            console.log('solved', this.current.step);
-            console.log(this.grid.map(c => c.step));
+            console.log('solved', this.grid.length, this.current.step, this.grid.filter(c => c.solved).length, this.grid.filter(c => c.solution).length);
             clearInterval(this.solveStack);
         }
         if(next) {
@@ -66,8 +54,6 @@ class Game {
             this.current = next;
             next.solved = true;
             this.current.solution = true;
-        } else {
-            // console.log(this.current, this.stack)
         }
     }
 
@@ -90,6 +76,7 @@ class Game {
         } else {
             this.current = this.grid[0];
             this.current.step = 0;
+            this.draw(); 
 
             // init neighbors for 0
             const neighbors = this.current.neighbors.reduce((a,v) => !v.solved ? (v.step = this.current.step + 1, [...a, v]) : a, []);
@@ -97,20 +84,22 @@ class Game {
 
             // clear drawing interval
             clearInterval(this.interval);
-
             // set a goal
             const goal = this.grid[this.grid.length - 1];
             goal.goal = true;
             console.log('goal', goal.x, goal.y)
-
-            // call the solve
-            this.solveStack = setInterval(this.solve, 20);
-
+            
             //reset the maze
             this.resetMaze = this.grid.map(c => ({...c}));
         }
     }
     
+    solve = () => {
+        // call the solve
+        this.solveStack = setInterval(this.solveStep, 20);
+    }
+
+
     removeWalls(current, next) {
         current.neighbors.push(next);
         next.neighbors.push(current);
@@ -144,20 +133,18 @@ class Cell {
         this.visited = false;
         // change
         this.solved = false;
-        this.solution = true;
+        this.solution = false;
         this.neighbors = [];
     }
     show(w, current) {
         const x = this.x * w;
         const y = this.y * w;
-        this.ctx.strokeStyle = '#DDD';
+        this.ctx.strokeStyle = '#000';
         let color =  '#00F';
         if(this.solved) {
             color = '#96A';
         }
         if(this.solved && this.solution) {
-            // const col = Math.floor(this.step * 0.5) % 16;
-            // color = `#${col}${col}${col}`;
             color = '#749';
         } 
         if(current) color = this.solved ? '#22C5E9' : '#A42'
@@ -208,10 +195,3 @@ class Cell {
 
     }
 }
-
-const game = new Game(ctx);
-
-game.setup();
-
-nextStep.onclick = game.solve;
-killSolve.onclick = game.killSolve;

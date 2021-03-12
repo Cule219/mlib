@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 // generate n x n maze
 function generateMaze(n) {
     const grid = [];
@@ -19,7 +21,6 @@ function generateMaze(n) {
         this.current = this.stack.pop();
     } else {
         clearInterval(this.interval);
-        console.log()
     }
 }
 
