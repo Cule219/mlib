@@ -18,9 +18,20 @@ class GridDraw {
         this.n = n;
         this.side = side / n;
     }
+
+    defineStartTarget(startColor, targetColor) {
+        // finds 2 radom elements to set as start and target
+        const randomIndex = () => Math.floor(Math.random() * this.n);
+        const startIndex = randomIndex();
+        const targetIndex = this.grid.length - randomIndex();
+        this.grid[startIndex].color = startColor || 'green';
+        this.grid[targetIndex].color = targetColor || 'red';
+    }
+
     settup() {
-        const colors = ['yellow', 'red', 'green', 'blue'];
-        this.grid = Array.from({length: this.n**2}, (_, i) => new Cell(i, colors[~~(Math.random() * 4)], i % this.n * this.side + 1, ~~(i / this.n) * this.side + 1, this.side - 2));
+        // const colors = ['yellow', 'red', 'green', 'blue'];
+        this.grid = Array.from({length: this.n**2}, (_, i) => new Cell(i, 'aquamarine', i % this.n * this.side + 1, ~~(i / this.n) * this.side + 1, this.side - 2));
+        this.defineStartTarget();
     }
 
     draw() {
