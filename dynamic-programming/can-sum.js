@@ -10,15 +10,77 @@ canSum(7, [2, 4]) => false
 */
 
 
-function canSum(n, arr, memo = {}) {
-    if(arr.includes(n)) return true;
-    for(const num of arr) {
-        if(n - num > 0) {
-            memo[n - num] = canSum(n - num, arr, memo);
-            return memo[n - num];
+function canSum(n, numbers, memo = {}) {
+    if(n in memo) return memo[n];
+    if(n === 0) return true;
+    if(n < 0) return false;
+    for(const num of numbers) {
+        const remainder = n - num;
+        if(canSum(remainder, numbers, memo)) {
+            memo[n] = true;
+            return true;
         }
     }
+    memo[n] = false;
     return false;
 }
 
-console.log(canSum(7, [2, 4]));
+
+// console.log(canSum(7, [2, 3])); // true
+// console.log(canSum(7, [5, 4, 3, 7])); // true
+// console.log(canSum(7, [2, 4])); // false
+// console.log(canSum(8, [2, 3, 5])); // true
+// console.log(canSum(300, [7, 14])); // false
+// console.log(canSum(700, [7, 14])); // true
+
+
+// howSum
+// same as above but return an array representing how you get to the result
+// in case of n = 0 return []
+
+function howSum(n, numbers, memo = {}) {
+    if(n in memo) return memo[n];
+    if(n === 0) return [];
+    if(n < 0) return null;
+    for(const num of numbers) {
+        const remainder = n - num;
+        const remainderResult = howSum(remainder, numbers, memo)
+        if(remainderResult !== null) {
+            memo[n] = remainderResult;
+            remainderResult.push(num);
+            return remainderResult;
+        }
+    }
+    memo[n] = null;
+    return null;
+}
+
+// console.log(howSum( 7, [5, 3, 4, 7])); // [3, 4] or [4, 3] or [7]
+// console.log(howSum(300, [7, 14])); // null
+// console.log(howSum(700, [7, 14])); // [7, 7, 7...]
+
+
+// bestSum
+// same as above but you always want the shortest sum
+
+function bestSum(n ,numbers, memo = {}, shortest = null) {
+    if (n in memo) return memo[n];
+    if (n === 0) return [];
+    if (n < 0) return null;
+    for (const num of numbers) {
+        const remainder = n - num;
+        const remainderResult = bestSum(remainder, numbers, memo);
+        memo[remainder] = remainderResult;
+        if(remainderResult !== null) {
+            const combination = [...remainderResult, num];
+            if(combination.length < shortest?.length || shortest === null) {
+                shortest = combination;
+            }
+        }
+    }
+    return shortest;
+}
+
+console.log(bestSum( 7, [5, 3, 4, 7])); // [7]
+console.log(bestSum(300, [7, 14])); // null
+console.log(bestSum(700, [7, 14])); // [14, 14, 14...]
