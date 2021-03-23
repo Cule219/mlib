@@ -71,9 +71,9 @@ function bestSum(n ,numbers, memo = {}, shortest = null) {
         const remainder = n - num;
         const remainderResult = bestSum(remainder, numbers, memo);
         memo[remainder] = remainderResult;
-        if(remainderResult !== null) {
+        if (remainderResult !== null) {
             const combination = [...remainderResult, num];
-            if(combination.length < shortest?.length || shortest === null) {
+            if (combination.length < shortest?.length || shortest === null) {
                 shortest = combination;
             }
         }
@@ -81,6 +81,33 @@ function bestSum(n ,numbers, memo = {}, shortest = null) {
     return shortest;
 }
 
-console.log(bestSum( 7, [5, 3, 4, 7])); // [7]
-console.log(bestSum(300, [7, 14])); // null
-console.log(bestSum(700, [7, 14])); // [14, 14, 14...]
+// console.log(bestSum( 7, [5, 3, 4, 7])); // [7]
+// console.log(bestSum(300, [7, 14])); // null
+// console.log(bestSum(700, [7, 14])); // [14, 14, 14...]
+// console.log(bestSum(100, [1,2,5,25])); // [25, 25, 25, 25]
+
+
+// same as canSum, but this time return number of unique ways you can sum up the array
+
+function countSum(n ,numbers, memo = {}, combinations = []) {
+    if (n in memo) return memo[n];
+    if (n === 0) return [];
+    if (n < 0) return null;
+    for (const num of numbers) {
+        const remainder = n - num;
+        const remainderResult = countSum(remainder, numbers, memo);
+        memo[remainder] = remainderResult;
+        if (remainderResult !== null) {
+            const combination = [...remainderResult, num];
+            console.log(combinations, combination);
+
+            combinations.push(combination);
+        }
+    }
+    return combinations;
+}
+
+console.log(countSum( 7, [5, 3, 4, 7])); // [7]
+// console.log(countSum(300, [7, 14])); // null
+// console.log(countSum(700, [7, 14])); // [14, 14, 14...]
+// console.log(countSum(100, [1,2,5,25])); // [25, 25, 25, 25]
