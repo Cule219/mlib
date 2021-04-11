@@ -29,12 +29,12 @@ canSum(7, [2, 4]) => false
 function canSum(n, numbers) {
     const table = Array(n + 1).fill(false);
     table[0] = true;
-    for(let i = 0; i <= n; i++) {
-        if(table[i]) {
-            for(num of numbers) {
-                if(i + num === n) {
+    for (let i = 0; i <= n; i++) {
+        if (table[i]) {
+            for (num of numbers) {
+                if (i + num === n) {
                     return true;
-                } else if(i + num < n) {
+                } else if (i + num < n) {
                     table[i + num] = true;
                 }
             }
@@ -77,12 +77,12 @@ function canSum(n, numbers) {
 function howSum(n, numbers) {
     const table = new Array(n + 1).fill(null);
     table[0] = [];
-    for(let i = 0; i <= n; i++) {
-        if(table[i]) {
-            for(num of numbers) {
-                if(i + num === n) {
+    for (let i = 0; i <= n; i++) {
+        if (table[i]) {
+            for (num of numbers) {
+                if (i + num === n) {
                     return [...table[i], num]
-                } else if(i + num < n) {
+                } else if (i + num < n) {
                     table[i + num] = [...table[i], num];
                 } else {
                     numbers.splice(i, 1);
@@ -124,36 +124,36 @@ function howSum(n, numbers) {
 function bestSum(n, numbers) {
     const table = new Array(n + 1).fill(null);
     table[0] = [];
-    for(let i = 0; i <= n; i++) {
-        if(table[i]) {
-            for(let num of numbers) {
+    for (let i = 0; i <= n; i++) {
+        if (table[i]) {
+            for (let num of numbers) {
                 const combo = [...table[i], num];
-                if(!table[i + num] || table[i + num].length > combo.length) {
+                if (!table[i + num] || table[i + num].length > combo.length) {
                     table[i + num] = combo;
                 }
-                
+
             }
         }
     }
     return table[n];
 }
 
-console.log(bestSum( 7, [5, 3, 4, 7])); // [7]
+console.log(bestSum(7, [5, 3, 4, 7])); // [7]
 console.log(bestSum(300, [7, 14])); // null
 console.log(bestSum(700, [7, 14])); // [14, 14, 14...]
-console.log(bestSum(100, [1,2,5,25])); // [25, 25, 25, 25]
+console.log(bestSum(100, [1, 2, 5, 25])); // [25, 25, 25, 25]
 
 
 // same as canSum, but this time return number of unique ways you can sum up the array
 
 function countSum(n, numbers) {
-    const table = Array(n + 1).fill(null);
-    table[0] = [];
-    for(let i = 0; i <= n; i++) {
-        if(table[i]) {
-            for(num of numbers) {
-                if(i + num <= n) {
-                    table[i + num] = [...table[i], num].sort((a, b) => a - b);;
+    const table = Array(n + 1).fill([]);
+    table[0] = [[]];
+    for (let i = 0; i <= n; i++) {
+        if (table[i]) {
+            for (num of numbers) {
+                if (i + num <= n) {
+                    table[i + num] = [...table[i + num], table[i].map(combo => [...combo, num])];
                 }
             }
         }
