@@ -103,7 +103,7 @@ function allConstruct(target, strings) {
         if (table[i].length) {
             for (let word of strings) {
                 if (target.slice(i, word.length + i) === word) {
-                    table[i + word.length] = [...table[i + word.length], ...table[i].map(combo => [...combo, word])];
+                    table[i + word.length].push(...table[i].map(combo => [...combo, word]));
                 }
             }
         }
@@ -114,3 +114,4 @@ function allConstruct(target, strings) {
 
 console.log(allConstruct('purple', ['purp', 'p', 'ur', 'le', 'prupl'])) // 2
 console.log(allConstruct('abcdef', ['ab', 'abc', 'cd', 'def', 'abcd', 'ef', 'c'])); // 4
+console.log(allConstruct('aaaaaaaz', ['a', 'aa', 'aaa', 'aaaa'])); // []
