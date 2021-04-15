@@ -115,3 +115,4 @@ function allConstruct(target, strings) {
 console.log(allConstruct('purple', ['purp', 'p', 'ur', 'le', 'prupl'])) // 2
 console.log(allConstruct('abcdef', ['ab', 'abc', 'cd', 'def', 'abcd', 'ef', 'c'])); // 4
 console.log(allConstruct('aaaaaaaz', ['a', 'aa', 'aaa', 'aaaa'])); // []
+

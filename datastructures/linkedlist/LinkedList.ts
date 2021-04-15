@@ -1,38 +1,38 @@
-import ListNode from './list-node';
+import ListNode from './ListNode';
 
 export default class LinkedList {
     private head: any = null;
 
-    empty (): boolean {
+    empty(): boolean {
         if (this.head) return false;
         return true;
     }
 
-    last (): ListNode {
+    last(): ListNode {
         let dummy: ListNode = this.head;
-        while(dummy.getNext()) {
+        while (dummy.getNext()) {
             dummy = dummy.getNext();
         }
         return dummy;
     }
 
-    find (key: string): any {
+    find(key: string): any {
         let dummy: ListNode = this.head;
-        while(dummy.getNext()) {
+        while (dummy.getNext()) {
             dummy = dummy.getNext();
         }
         return dummy;
     }
 
-    insert (value: any, key: string) {
+    insert(value: any, key: string) {
         var node: ListNode = new ListNode(value, key);
-        if(!this.head) this.head = node;
+        if (!this.head) this.head = node;
         else this.last().next(node);
     }
 
-    print (): void {
+    print(): void {
         let dummy: ListNode = this.head;
-        while(dummy.getNext()) {
+        while (dummy.getNext()) {
             console.log(dummy.value() + ' ');
             dummy = dummy.getNext();
         }

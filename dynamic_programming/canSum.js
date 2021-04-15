@@ -138,10 +138,10 @@ function bestSum(n, numbers) {
     return table[n];
 }
 
-console.log(bestSum(7, [5, 3, 4, 7])); // [7]
-console.log(bestSum(300, [7, 14])); // null
-console.log(bestSum(700, [7, 14])); // [14, 14, 14...]
-console.log(bestSum(100, [1, 2, 5, 25])); // [25, 25, 25, 25]
+// console.log(bestSum(7, [5, 3, 4, 7])); // [7]
+// console.log(bestSum(300, [7, 14])); // null
+// console.log(bestSum(700, [7, 14])); // [14, 14, 14...]
+// console.log(bestSum(100, [1, 2, 5, 25])); // [25, 25, 25, 25]
 
 
 // same as canSum, but this time return number of unique ways you can sum up the array
@@ -153,7 +153,7 @@ function countSum(n, numbers) {
         if (table[i]) {
             for (num of numbers) {
                 if (i + num <= n) {
-                    table[i + num] = [...table[i + num], table[i].map(combo => [...combo, num])];
+                    table[i + num].push(table[i].map(combo => [...combo, num]));
                 }
             }
         }
@@ -161,7 +161,8 @@ function countSum(n, numbers) {
     return table[n];
 }
 
-// console.log(countSum( 7, [5, 3, 4, 7])); // [7]
+console.log(countSum(7, [5, 3, 4, 7])); // 2
 // console.log(countSum(300, [7, 14])); // null
 // console.log(countSum(700, [7, 14])); // [14, 14, 14...]
 // console.log(countSum(100, [1,2,5,25])); // [25, 25, 25, 25]
+
